@@ -5,46 +5,55 @@ using TestNinja.Fundamentals;
 namespace TestNinja.UnitTest
 {
     [TestClass]
-    public class ReservationTest
+    public class ReservationTests
     {
-        Reservation reservation;
+        private Reservation reservation;
+        private User user;
 
         [TestMethod]
-        public void CanBeCanceldBy_UserIsAdmin_ReturnsTrue()
+        public void CanBeCancelledBy_UserIsAdmin_ReturnTrue()
         {
-            //Arrange
+            //Arrenge 
             reservation = new Reservation();
-            //Act
+
+            //act
             var result = reservation.CanBeCancelledBy(new User { IsAdmin = true });
-            //Assert
 
+            //assert
             Assert.IsTrue(result);
         }
 
         [TestMethod]
-        public void CanBeCancelldBy_MadeBySameUser_ReturnsTrue()
+        public void CanBeCancelled_WhenUserIsAdmin_ThenReturnFalse()
         {
-            //Arrange
-            var user = new User();
-            reservation = new Reservation { MadeBy = user};
+            reservation = new Reservation();
 
-            // Act
-            var result = reservation.CanBeCancelledBy(user);
-
-            //Assert
-
-            Assert.IsTrue(result);
-        }
-
-
-        [TestMethod]
-        public void CanBeCancelled_OtherUser_ReturnFalse()
-        {
-            reservation = new Reservation { MadeBy = new User()};
-
-            var result = reservation.CanBeCancelledBy( new User());
+            var result = reservation.CanBeCancelledBy(new User { IsAdmin = false });
 
             Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        public void CanBeCancelled_WhenSameUser_ThenReturnTrue()
+        {
+            user = new User();
+            var reservation = new Reservation { MadeBy = user};          
+
+            var result = reservation.CanBeCancelledBy(new User { IsAdmin = true });
+
+            Assert.IsTrue(result);
+        }
+
+        [TestMethod]
+        public void CanBeCancelled_WhenOtherser_ThenFalse()
+        {
+            var reservation = new Reservation { MadeBy = new User() };
+
+            var result = reservation.CanBeCancelledBy(new User { IsAdmin = false });
+
+            Assert.IsFalse(result);
+
+
         }
 
     }
