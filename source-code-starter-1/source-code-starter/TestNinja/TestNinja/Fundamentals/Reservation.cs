@@ -15,6 +15,7 @@
 
             return false;
             //return (user.IsAdmin || MadeBy == user);
+            //copie edivalter
         }
         
     }
